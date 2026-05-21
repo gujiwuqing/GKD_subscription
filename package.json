@@ -1,11 +1,11 @@
 {
-  "name": "@aisouler/gkd_subscription",
+  "name": "@gujiwuqing/gkd_subscription",
   "version": "0.0.0",
   "type": "module",
   "gkd": {
     "outDir": "dist",
-    "file": "AIsouler_gkd.json5",
-    "versionFile": "AIsouler_gkd.version.json5",
+    "file": "gujiwuqing_gkd.json5",
+    "versionFile": "gujiwuqing_gkd.version.json5",
     "changelog": "CHANGELOG.md",
     "README.md": "README.md"
   },
