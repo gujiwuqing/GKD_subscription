@@ -101,55 +101,35 @@ export default defineGkdApp({
     {
       key: 8,
       name: '功能类-全自动看广告获取听歌时长',
+      desc: '自动点击领取奖励/再看视频，适配v19.0.0+原生UI',
+      activityIds: 'com.ss.android.excitingvideo.ExcitingVideoActivity',
       rules: [
         {
           key: 0,
-          fastQuery: true,
-          actionDelay: 12000,
-          position: {
-            left: 'width * 7.45',
-            top: 'height * 0.5',
-          },
-          activityIds: 'com.ss.android.excitingvideo.ExcitingVideoActivity',
-          matches:
-            '@FlattenUIText[text="广告"] + [text$="声音"] + [text="反馈"][visibleToUser=true]',
-          snapshotUrls: [
-            'https://i.gkd.li/i/24521423',
-            'https://i.gkd.li/i/24521440',
-          ],
+          name: '点击领取奖励',
+          matches: '[desc="领取奖励"][visibleToUser=true][focusable=true]',
         },
         {
           key: 1,
-          activityIds:
-            'com.bytedance.sdk.openadsdk.core.component.reward.activity.TTRewardVideoActivity',
-          matches: '[visibleToUser=true][text="奖励已领取"]',
-          snapshotUrls: 'https://i.gkd.li/i/24522627',
+          name: '点击继续观看/再看视频',
+          matches: '[desc^="再看"][visibleToUser=true][focusable=true]',
         },
         {
-          preKeys: [0, 1],
-          fastQuery: true,
-          actionDelay: 500,
-          activityIds: [
-            'com.bytedance.sdk.openadsdk.core.component.reward.activity.TTRewardVideoActivity',
-            'com.bytedance.sdk.openadsdk.stub.activity.Stub_Standard_Portrait_Activity',
-            'com.ss.android.excitingvideo.ExcitingVideoActivity',
-          ],
+          key: 2,
+          name: '点击免费听奖励按钮',
+          matches: '[desc$="免费听"][visibleToUser=true][focusable=true]',
+        },
+        {
+          key: 3,
+          name: '点击领取成功关闭按钮',
           matches:
-            '[text="领取奖励" || text^="再看一个" || text="继续观看"][visibleToUser=true]',
-          snapshotUrls: [
-            'https://i.gkd.li/i/15140816',
-            'https://i.gkd.li/i/24521416',
-            'https://i.gkd.li/i/24521446',
-            'https://i.gkd.li/i/24521516',
-          ],
+            '[desc^="领取成功"][desc$="按钮"][visibleToUser=true][focusable=true]',
         },
         {
           key: 99,
-          fastQuery: true,
-          activityIds: 'com.ss.android.excitingvideo.ExcitingVideoActivity',
+          name: '无新视频时关闭',
           matches:
-            '@[clickable=true][width<120 && height<120] + LinearLayout > [text="当前无新视频"][visibleToUser=true]',
-          snapshotUrls: 'https://i.gkd.li/i/24522244',
+            '[desc="当前无新视频"][visibleToUser=true] < ViewGroup + @ViewGroup[clickable=true][width<120&&height<120]',
         },
       ],
     },
