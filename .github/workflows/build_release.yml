@@ -63,7 +63,8 @@ jobs:
         run: |
           git config --local user.email github-actions[bot]@users.noreply.github.com
           git config --local user.name github-actions[bot]
-          git pull --rebase origin ${{ github.ref_name }}
+          git fetch origin ${{ github.ref_name }}
+          git rebase origin/${{ github.ref_name }}
           git status
           git add .
           git commit -a -m "chore: v${{steps.version.outputs.version}}"
@@ -92,7 +93,7 @@ jobs:
       - name: Publish package
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        if: ${{ steps.commit.outcome == 'success' && env.NPM_TOKEN != '' }}
+        if: ${{ env.NPM_TOKEN != '' }}
         run: |
           pnpm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
           node -e "import('@gkd-kit/tools').then((m) => m.updatePkgVersion());"
