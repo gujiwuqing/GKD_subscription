@@ -106,30 +106,31 @@ export default defineGkdApp({
       rules: [
         {
           key: 0,
+          name: '广告看完后返回关闭落地页',
+          action: 'back',
+          actionDelay: 2000,
+          matches: '[desc*="领取成功"][desc$="按钮"][focusable=true]',
+          excludeMatches: '[desc="领取奖励"][visibleToUser=true]',
+        },
+        {
+          key: 1,
           name: '点击领取奖励',
           matches: '[desc="领取奖励"][visibleToUser=true][focusable=true]',
         },
         {
-          key: 1,
+          key: 2,
           name: '点击继续观看/再看视频',
           matches: '[desc^="再看"][visibleToUser=true][focusable=true]',
         },
         {
-          key: 2,
+          key: 3,
           name: '点击免费听奖励按钮',
           matches: '[desc$="免费听"][visibleToUser=true][focusable=true]',
         },
         {
-          key: 3,
-          name: '点击领取成功关闭按钮',
-          matches:
-            '[desc^="领取成功"][desc$="按钮"][visibleToUser=true][focusable=true]',
-        },
-        {
           key: 99,
-          name: '无新视频时关闭',
-          matches:
-            '[desc="当前无新视频"][visibleToUser=true] < ViewGroup + @ViewGroup[clickable=true][width<120&&height<120]',
+          name: '无新视频时退出',
+          matches: '[desc="坚持退出"][visibleToUser=true][focusable=true]',
         },
       ],
     },

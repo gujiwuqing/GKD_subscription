@@ -1,85 +1,136 @@
-# @AIsouler/GKD_subscription
+# @gujiwuqing/GKD_subscription
+
+> gujiwuqing 的 GKD 订阅规则，基于 AIsouler 的订阅 Fork 并持续维护。
 
 ---
 
-## 本仓库已停止维护
+## 订阅链接
 
-> 2026.02.12
+复制以下任意一个链接到 GKD 即可使用本订阅规则：
 
-建议使用 [GKD订阅模板](https://github.com/gkd-kit/subscription-template) 构建自己的订阅，如果仅供个人使用，维护量其实很小，并不会占用您太多时间。
+### 推荐：jsDelivr CDN（国内速度快）
 
-本仓库包含大量早期不完善的规则，以及一些为兼容特殊场景、不同应用版本和不同系统环境而编写的非常抽象的规则，您可能并不需要这些规则，但它们可能会影响查询效率。
+```txt
+https://cdn.jsdelivr.net/npm/@gujiwuqing/gkd_subscription@latest/dist/gujiwuqing_gkd.json5
+```
 
-最后，维护这个仓库已经2年时间了，期间也学会了不少东西，最初是凭借着一股热情在维持，但热情终究会耗尽，是时候说再见了。
+### GitHub Raw 源
+
+```txt
+https://raw.githubusercontent.com/gujiwuqing/GKD_subscription/main/dist/gujiwuqing_gkd.json5
+```
+
+### npm 官方源（备用）
+
+```txt
+https://registry.npmjs.org/@gujiwuqing/gkd_subscription/-/gkd_subscription-0.0.0.tgz
+```
 
 ---
 
-## 声明
+## 使用说明
 
-- **禁止在国内平台传播**
-- **本仓库仅供本人学习使用**
-- **精力有限，随缘更新**
+- 仅默认启用 `开屏广告` 规则，其它规则需手动开启
+- 建议按需开启规则，不要全部开启，避免规则阻塞和耗电增加
+- 在 GKD 订阅界面下拉可检测更新
 
-## 说明
+---
 
-- **致力于编写效率最高、误触最低、覆盖最全面的规则**
+## 日常维护指南
 
-- **已适配的规则需要等待发布更新才能生效，北京时间每天凌晨3点会自动发布更新，如果规则没有改动则不会发布更新，在 `GKD订阅界面` 下拉就能检测是否有更新 -> [点击查看更新日志](https://github.com/AIsouler/GKD_subscription/releases)**
+### 项目结构
 
-- **仅启用 `开屏广告` 一类规则，其它所有规则均需用户手动打开，规则类别里可以批量开启某一类规则，建议按需开启规则，不要无脑开启规则，开启过多规则可能造成规则阻塞从而导致规则触发缓慢甚至不触发，并且规则开启越多耗电也越多 -> [点击查看耗电说明](https://gkd.li/guide/faq#power)**
-
-- **请求适配或报告问题 -> [点击反馈](https://github.com/AIsouler/GKD_subscription/issues/new/choose)**
-
-- **交流讨论（不要在这里反馈） -> [点击查看或开启讨论](https://github.com/AIsouler/GKD_subscription/discussions)**
-
-- **欢迎贡献规则，提交pr前请确认您已仔细阅读 [贡献指南](./CONTRIBUTING.md) 和 [API文档](https://gkd.li/api/)，规则编写可参考 [个人收集的通用规则以及适用场景](./Selectors.md)**
-
-## 订阅
-
-复制以下任意一个链接到 GKD 即可使用本订阅规则
-
-- npmmirror源（国内镜像，推荐大陆用户使用）
-
-```txt
-https://registry.npmmirror.com/@aisouler/gkd_subscription/latest/files/dist/AIsouler_gkd.json5
+```
+├── src/
+│   ├── apps/              # 各 APP 的规则文件（如 com.luna.music.ts）
+│   ├── subscription.ts    # 订阅元信息配置
+│   ├── globalGroups.ts    # 全局规则组
+│   ├── categories.ts     # 规则分类
+│   └── globalDefaultApps.ts  # 全局规则默认启用的 APP 列表
+├── dist/                  # 构建产物（自动生成，无需手动修改）
+├── .github/workflows/     # CI 自动发布配置
+├── package.json           # 项目配置
+└── scripts/               # 构建和检查脚本
 ```
 
-- GitHub源
+### 添加/修改规则
 
-```txt
-https://raw.githubusercontent.com/AIsouler/GKD_subscription/main/dist/AIsouler_gkd.json5
+1. **编辑规则文件**：修改 `src/apps/` 下对应 APP 的 `.ts` 文件
+2. **本地验证构建**：
+   ```bash
+   pnpm install    # 首次或依赖变更时执行
+   pnpm run build  # 构建，检查是否有错误
+   ```
+3. **提交并推送**：
+   ```bash
+   git add -A
+   git commit -m "feat: 描述你的修改"
+   git push origin main
+   ```
+4. **自动发布**：推送后 CI 会自动触发 `build_release`，完成构建 → 发布到 npm → 同步到 CDN
+
+### 手动触发发布
+
+如果自动发布未触发，可以手动操作：
+
+1. 打开 [Actions 页面](https://github.com/gujiwuqing/GKD_subscription/actions/workflows/build_release.yml)
+2. 点击 **Run workflow** → 确认
+
+### 获取 APP 快照（用于编写规则）
+
+1. 在 GKD APP 中打开「高级模式」→ 「保存快照」
+2. 在目标 APP 的目标页面触发保存
+3. 导出 JSON 快照文件，分析节点树中的 `text`、`desc`、`id` 等属性
+4. 编写对应的 GKD 选择器规则
+
+### 规则编写要点
+
+```typescript
+// 使用 desc 属性匹配（汽水音乐 v19.0.0+ 等原生 UI）
+matches: '[desc="领取奖励"][visibleToUser=true][focusable=true]'
+
+// 使用 text 属性匹配（传统方式）
+matches: '[text="跳过"][visibleToUser=true]'
+
+// 使用 id 匹配（最稳定）
+matches: '[id="com.example:id/btn_close"]'
 ```
 
-- 当前版本: v0
+---
 
-- 当前订阅文件已适配 886 个应用，共有 2074 应用规则组，3 全局规则组
+## 发布相关配置
+
+| 配置项 | 值 |
+|--------|------|
+| npm 包名 | `@gujiwuqing/gkd_subscription` |
+| npm 主页 | https://www.npmjs.com/package/@gujiwuqing/gkd_subscription |
+| GitHub 仓库 | https://github.com/gujiwuqing/GKD_subscription |
+| CI Workflow | `.github/workflows/build_release.yml` |
+| GitHub Secret | `NPM_TOKEN`（npm Granular Access Token，需有 publish 权限） |
+| 自动发布时间 | 每天 UTC 19:00（北京时间凌晨 3:00）或手动触发 |
+
+### 更新 NPM Token
+
+Token 过期后需要更新：
+1. 打开 https://www.npmjs.com/settings/gujiwuqing/tokens
+2. 生成新的 **Granular Access Token**（勾选 Read and write + bypass 2FA）
+3. 打开 https://github.com/gujiwuqing/GKD_subscription/settings/secrets/actions
+4. 更新 `NPM_TOKEN` 的值
+
+---
+
+## 已适配规则
 
 - 查看 [适配 APP 列表](./dist/README.md)
+- 查看 [更新日志](https://github.com/gujiwuqing/GKD_subscription/releases)
 
-- 使用 [GKD订阅模板](https://github.com/gkd-kit/subscription-template) 快速构建自己的订阅
+## 参考资料
 
-- 如何编写订阅/贡献此项目 -> [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [GKD 官网](https://gkd.li/) | [使用教程](https://gkd.li/guide/) | [API 文档](https://gkd.li/api/) | [常见问题](https://gkd.li/guide/faq)
+- [规则编写教程](https://github.com/Snoopy1866/notebook/blob/main/04%20Others/GKD%20%E8%A7%84%E5%88%99%E7%BC%96%E5%86%99%E6%95%99%E7%A8%8B/gkd-rule-tutorial.md)
+- [GKD 订阅模板](https://github.com/gkd-kit/subscription-template)
+- [贡献指南](./CONTRIBUTING.md)
 
-## 交流群
+## 致谢
 
-- TG群组：<https://t.me/+8L4eHePgYEZmY2M9>
-
-## 其他
-
-- 在 [GKD官网](https://gkd.li/) 查看 [GKD基础使用教程](https://gkd.li/guide/) 、[常见问题](https://gkd.li/guide/faq) 以及 [API文档](https://gkd.li/api/)
-
-- 查看 [规则编写教程](https://github.com/Snoopy1866/notebook/blob/main/04%20Others/GKD%20%E8%A7%84%E5%88%99%E7%BC%96%E5%86%99%E6%95%99%E7%A8%8B/gkd-rule-tutorial.md) By [@Snoopy1866](https://github.com/Snoopy1866)
-
-- 使用 [GKD网页审查工具增强脚本](https://github.com/adproqwq/MakeGKDInspectBetter) 可以高度自定义从网页复制出来的规则，提高规则编写效率
-
-## 感谢以下项目
-
-[gkd-kit/subscription](https://github.com/gkd-kit/subscription)
-
-## 感谢以下开发者的贡献
-
-![img](https://contrib.rocks/image?repo=AIsouler/GKD_subscription&_v=0)
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=AIsouler/GKD_subscription&type=Date)](https://star-history.com/#AIsouler/GKD_subscription&Date)
+基于 [AIsouler/GKD_subscription](https://github.com/AIsouler/GKD_subscription) Fork 维护
