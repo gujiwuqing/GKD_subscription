@@ -21,7 +21,8 @@ export default defineGkdSubscription({
   version: 0,
   author: 'gujiwuqing',
   checkUpdateUrl: './gujiwuqing_gkd.version.json5',
-  supportUri: 'https://github.com/gujiwuqing/GKD_subscription/issues/new/choose',
+  supportUri:
+    'https://github.com/gujiwuqing/GKD_subscription/issues/new/choose',
   categories,
   globalGroups,
   apps: rawApps,
