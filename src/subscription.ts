@@ -18,7 +18,7 @@ apps.forEach((appConfig) => {
 export default defineGkdSubscription({
   id: 666,
   name: 'gujiwuqing的GKD订阅',
-  version: 0,
+  version: 1,
   author: 'gujiwuqing',
   checkUpdateUrl: './gujiwuqing_gkd.version.json5',
   supportUri:
