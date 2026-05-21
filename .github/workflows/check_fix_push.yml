@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - '**'
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'tsconfig.json'
 
 permissions: write-all
 
