@@ -93,6 +93,7 @@ jobs:
         if: ${{ env.NPM_TOKEN != '' }}
         run: |
           pnpm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-          npm version "0.0.${{steps.version.outputs.version}}" --no-git-tag-version --allow-same-version
+          PATCH=$(date +%Y%m%d%H%M)
+          npm version "0.1.${PATCH}" --no-git-tag-version
           pnpm publish --no-git-checks
           node -e "import('@gkd-kit/tools').then((m) => m.syncNpmmirror());"
